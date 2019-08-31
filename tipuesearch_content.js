@@ -1,1 +1,0 @@
-var tipuesearch = {"pages":[{"title":"每日一句","text":"庭有枇杷树，吾妻死之年所手植也，今已亭亭如盖矣。 — 归有光","tags":"Motto","url":"thedogb.github.io/2019-08-31","loc":"thedogb.github.io/2019-08-31"},{"title":"每日一句","text":"情深不寿，慧极必伤。谦谦君子，温润如玉。 — 金庸","tags":"Motto","url":"thedogb.github.io/2019-08-31-2","loc":"thedogb.github.io/2019-08-31-2"}]};

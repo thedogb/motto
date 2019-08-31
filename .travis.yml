@@ -1,7 +1,3 @@
-env:
-  global:
-    secure: Jhz4+DqQknolKFMA+oO2VO/mgFPYw5fncQSQOoFSvE67bPcyPB04oyJiapNYyhEN/TweUfqi/a8bKjPmPVQ7MGLaqCCNQOUXrUl0ReyivRkun7hzu1ft9zPwIoV8ZuJXvL8JZa67rwCFm0rsUtB2SCy2a/Si0YR9hGw31SKgdKP6q5vsYG4uRENa9kgMo/bhD9Ak5DE7IjygxQQbjM6NHKCR78ORK+IqaEfD4h55GIiSB0WXm4tosxqXt1Z49ww7bqQuTdDFzBXVjBODHulQfUII1xKAHr0MHEMROljzuWEFQYIgONASQohLE0tanMo4zr4UelYG2Cwa15fOPzupQXJwINpr+KiNtc4UxdO6WfRGH07us62I3jB73NI+epkKWNQlLnZFepi+towON8criSIcycM5ZUExYooG3G7+Z5+aWG8iwrBN/H07gED6Z/dVTAk6kExj/VXrcYHfZb0OSfAoRDNyZ7ybnIVNp+ewb7tmx489YKwvjddJhJi6h4xBD61NewBmwx9L/qnprCxKdHygZP+566btxkYaT++zDQzl9t0wYxlXcztSDlNTb9zjEep9Qn27jtAaLVJruKMB+OnOnp4kKrHinvTpCWHUMZtbZB4IwbINGtkGFF/Gd7q4chC+25jvCVrozZGiLvI0U3dOFZZeySx4/V+ohw4FHRQ=
-
 language: python
 dist: trusty
 python:
@@ -11,18 +7,22 @@ cache:
 install:
 - pip install -r requirements.txt
 script:
-- git config --global user.email "$GIT_EMAIL"
-- git config --global user.name "$GIT_NAME"
-- git config --global push.default simple
 - mkdir theme plugins
 - git clone https://github.com/Pelican-Elegant/elegant.git theme/elegant
 - git clone --recursive https://github.com/getpelican/pelican-plugins plugins/pelican-plugins
-- git clone https://$GH_TOKEN@github.com/thedogb/thedogb.github.io output
 - env SITEURL="thedogb.github.io" make publish
-after_success:
-- cd output
-- git status
-- git remote -v
-- git add -A .
-- git commit -m "update from travis"
-- git push --quiet origin master
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GH_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  repo: thedogb/thedogb.github.io
+  local_dir: output
+  on:
+    branch: master
+env:
+  global:
+  - secure: D6i+92/Vl121Whkq3rIdJeRDaBvTDr00a1RUq6Vfo3K41NHuGfAy6a9c0N6/ZTtE+qJyXhs7rIvGz0ry40ddMrsSV+P+/F5ddSHL2jG5IJWGWGsYl/xFBE8/YkGc7P8cA6sHg//KoYEXFNasFYw7cjeUtmWWu2FIHuDbc3i/CiojrYtNuvgKYxN1V/OVgQ1v9/HHhAs4Ey2K94bN460jWteLHIA/SjWb/72dNcw/s84DsUuivB7bF4BTn4f2ZQN+fDNCn//ykJb+SA5Lf1PXFIeOGGoh6zc0KV6q4TDF458zgdVKWhCcSg4WqX+V/JTMPH7T9HswOGlfwKn002LR9HpDY9LJKKpVl5KgiMFtfIxXA00QlRGfS/qIgip6HKeCpw+5FgtO8mopGidL5q4xz6//Khn8xXreP7+nziP79WapXWLjXQlC8ALMPLDlg3Fmu4TY86COxmqVgAFrgtmSIfUgfQ3mcjFiBMgLsZMLpcIcZR44HnZKBxeMbnoVXz4LcDvZO0bPb+jBl8B/HC4z52BQiCjHc8RAsBMnM9IBqRoQHKO6PkXPTZP2QoIClXTGuLOzdjaMGqkc4tDu3qTdN5H+puRvLfZblsPQYGtlKIFNqieC4LA18pPaW7fVuOx3ueISTGHLHaGnGXHAhOekaGyMCE5cOI/ANa+l1SwzG2U=
+  - secure: wLU5uff3psr/+u2gzkBlm+9GjFVkF35mRDpuez9Eb4tcQpyaOkf70rZLwp5a9nk2Ovwz2pcEELlZtaYVSYvEH60B4UpyOeIQHT48aB1lduCzshGCc78bk6js2liiYz6Noqy4giRVC+XsvinPIS+5OdNeGNMHnq6bhGfhmrgHKJel6ynqz6OM92MWueOadWVxC2ICcfIAo9/ScN0U1IhrntKVfKimWhPrqxie7aLT2UZvB8Hc1SFJbZwEsi7XlbZ9frBm59b5E4anHCincLzaV8y0kF1uskVSbiKfPZEVaeQupwCFM8iFsuy7jTMtWyIMytYhR8tTe75IFITSc9JwymWhz+wa7jOH3a/bU94j/Y1qtcIy6zKIKDuKqkJF273uLykTLfT8T9/LeCF1RkP/5LagtqXYZq/fI/qLQ5egmfkTFn8IlfTx5wPiJx7jNHa3mXNYFLUnWbbOBFkq1vDkXF7S5socoiKmHk7ScNhunX+LTUM3WOkbny7HfAPDXDHkXp8gGCzV5Y329cWqHBDOFKjcQ9iVDLAP5rZQQaAxrFeZcv8sL8vWW9YL4rLkSWvpxP2iTuifN/a1VdiAaNiL7St3JISgr80W5bgQ6AzseJOjwoUrkjcL6be7CobiH7pG0JV4EwdmcpTnsmtGrv3R81B/L8N89oIGNJRRXnPdEcE=
+  - secure: Mnz/ga+mo8oXAegDOMYGTE4wuoMgviIOtKy0lhriwVnodV657UK4APX47ua9yNcpbeylIdjB8rKKa8xQiSXaq6COqvadlnwakyh0hZidKiInC90tu0JMwK2ZZU7jzKPCK1nPue/NE45s/2LJSByevN+F6BEh04vfcjvkfLEMTgDOxhrzp+c5ST3W+TrFbKiDHIyoIDulH3MvYQPo1uadL2yjrnuZrTqdGUTSIPIlrwRJehtauNWAqYPrLr8vQFDYlEN82hxxyTq6mZ0oMTNeK4D2zkU+D+ttWgO5df7NhvGwOFzQZmXL22UqKrDuaQFS2LVlupcG96bUUwW/h2zQ5TwxXlLdd9DhuDuHK9xdjwqlrcoaLUlf0dW0hrK3NF30P8ElcDBdFnzL4CPhJbBnNKYNZtlD2wyLgQSCLP1Ov43PHGQf45M3KAZWGv5Hjm+a4B8NixJ1S/3rNU6OgTL2AnZtX9837//CgSbRQ8tnEb+u/v7qE8LQBXjG1F1oCWvVomeBEUvPvikuGJZWTJHePPs0+vF5ApWzJ7Ez5V026XZDQkEvbeEZpWc6/a+XOQ7XjM5rOjUK1m6UMPNQeQR8os5sOwYYZY9hC1w9xAIt0W77gOaXpFegHkjvUc3vx5fQhszYaREVwBWnR4VaguX6TlAzJ2IM8qQd1yMYVBZHDFg=

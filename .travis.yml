@@ -17,10 +17,12 @@ script:
 - mkdir theme plugins
 - git clone https://github.com/Pelican-Elegant/elegant.git theme/elegant
 - git clone --recursive https://github.com/getpelican/pelican-plugins plugins/pelican-plugins
-- git clone --depth 1 https://$GH_TOKEN@github.com/thedogb/thedogb.github.io.git output
+- git clone https://$GH_TOKEN@github.com/thedogb/thedogb.github.io output
 - env SITEURL="thedogb.github.io" make publish
 after_success:
 - cd output
+- git status
+- git remote -v
 - git add -A .
 - git commit -m "update from travis"
 - git push --quiet origin master

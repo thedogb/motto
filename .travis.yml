@@ -19,6 +19,7 @@ deploy:
   keep_history: true
   repo: thedogb/thedogb.github.io
   local_dir: output
+  target_branch: master
   on:
     branch: master
 env:

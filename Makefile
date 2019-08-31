@@ -73,7 +73,6 @@ publish:
 	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(PUBLISHCONF) $(PELICANOPTS)
 
 github: publish
-	cd $(OUTPUTDIR)
 	git commit -a -m "Generate Pelican site" 
 	git push origin $(GITHUB_PAGES_BRANCH)
 
